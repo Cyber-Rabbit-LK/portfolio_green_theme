@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mama · tech portfolio</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'SF Mono', 'Fira Code', monospace, system-ui;
+        }
+
+        body {
+            background: #0c0f0c;
+            background-image: linear-gradient(135deg, #101510 0%, #192019 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            color: #d1f0d1;
+        }
+
+        /* main grid – two columns: left (fixed sidebar) + right (scrollable content) */
+        .tech-portfolio {
+            max-width: 1350px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.8rem;
+            background: rgba(0, 10, 0, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid #1f4a2f;
+            border-radius: 2.2rem;
+            box-shadow: 0 20px 40px -15px #000, 0 0 0 1px #2a5a33 inset;
+            overflow: hidden;
+        }
+
+        /* left panel — engineer's badge */
+        .left-panel {
+            background: #0f180f;
+            border-right: 2px solid #226633;
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 8px 0 20px #060b06;
+        }
+
+        .profile-mini {
+            text-align: left;
+            margin-bottom: 2.2rem;
+        }
+
+        .profile-mini .mama-badge {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #b2ffb2;
+            letter-spacing: -1px;
+            text-shadow: 0 0 12px #22dd88;
+        }
+
+        .profile-mini .undergrad-tag {
+            background: #1a2e1a;
+            display: inline-block;
+            padding: 0.3rem 1.4rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            border: 1px solid #33aa55;
+            color: #b2f0b2;
+            margin-top: 0.6rem;
+        }
+
+        .status-box {
+            background: #112211;
+            border: 1px solid #2d6b3a;
+            border-radius: 1.2rem;
+            padding: 1.5rem 1rem;
+            margin: 2rem 0;
+            box-shadow: inset 0 0 15px #0d1f0d;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            margin: 1.2rem 0;
+            color: #c0f0c0;
+        }
+
+        .status-item i {
+            width: 28px;
+            color: #3bc56b;
+            font-size: 1.4rem;
+        }
+
+        .tech-stack-mini {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .stack-chip {
+            background: #1d311d;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            border: 1px solid #3f9e5f;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #bef5be;
+        }
+
+        /* right panel — scrollable tech content */
+        .right-panel {
+            padding: 2.2rem 2.5rem 2.5rem 1.8rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #2f7a4a #1b2a1b;
+        }
+
+        .right-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        .right-panel::-webkit-scrollbar-track {
+            background: #172517;
+        }
+        .right-panel::-webkit-scrollbar-thumb {
+            background: #2c8a4a;
+            border-radius: 10px;
+        }
+
+        /* section headers — technical underline */
+        .tech-section-header {
+            font-size: 1.9rem;
+            font-weight: 500;
+            border-bottom: 3px solid #2f8740;
+            padding-bottom: 0.5rem;
+            margin: 2rem 0 1.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #d0ffd0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .tech-section-header i {
+            color: #44d46a;
+            font-size: 2rem;
+        }
+
+        /* about — terminal style */
+        .terminal-about {
+            background: #0e1a0e;
+            border-radius: 18px;
+            padding: 1.8rem;
+            border-left: 8px solid #30b35c;
+            font-family: 'Fira Code', monospace;
+            line-height: 1.8;
+            box-shadow: 0 10px 20px #030803;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-about p {
+            color: #c4f7c4;
+            font-size: 1.15rem;
+        }
+
+        .terminal-about .cursor {
+            background: #3ed46a;
+            width: 12px;
+            height: 1.6rem;
+            display: inline-block;
+            animation: blink 1.2s infinite;
+            margin-left: 6px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; } 50% { opacity: 0; }
+        }
+
+        /* projects as TIMELINE (tech view) */
+        .project-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 1.5rem;
+            background: #102110d9;
+            border-radius: 1.8rem;
+            padding: 1.5rem 1.8rem;
+            border: 1px solid #1f6a37;
+            transition: 0.2s;
+        }
+
+        .timeline-item:hover {
+            border-color: #5fdd88;
+            box-shadow: -4px 4px 0 #2f884a;
+            background: #153015;
+        }
+
+        .timeline-year {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #76e69c;
+            text-align: right;
+            border-right: 3px solid #31854e;
+            padding-right: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.9rem;
+            color: #c2ffcc;
+        }
+
+        .tech-badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.8rem 0 0.2rem;
+        }
+
+        .tech-badge {
+            background: #112611;
+            border: 1px solid #48b46c;
+            border-radius: 30px;
+            padding: 0.2rem 1.1rem;
+            font-size: 0.85rem;
+        }
+
+        /* skills grid – precise & technical */
+        .skills-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .skill-cell {
+            background: #0f1f0f;
+            border: 1px solid #2b7a42;
+            border-radius: 1.5rem;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: 0.15s;
+        }
+
+        .skill-cell i {
+            color: #58d17e;
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        .skill-cell:hover {
+            background: #1c391c;
+            border-color: #7fe09c;
+            transform: scale(1.02);
+        }
+
+        /* CV + CERTIFICATES as compact cards */
+        .cred-grid-tech {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .tech-cred-item {
+            background: #0d1d0d;
+            border-radius: 1.8rem;
+            padding: 1.8rem 1.5rem;
+            border: 1px solid #2e884a;
+            box-shadow: 0 8px 0 #153015;
+            transition: 0.15s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tech-cred-item i {
+            font-size: 2.5rem;
+            color: #5de18b;
+            margin-bottom: 1rem;
+        }
+
+        .tech-cred-item .title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #c6ffc6;
+        }
+
+        .tech-cred-item .meta {
+            color: #95d8a5;
+            font-size: 1rem;
+            margin: 0.6rem 0 1rem 0;
+        }
+
+        .fake-download {
+            background: transparent;
+            border: 2px solid #409a5e;
+            border-radius: 60px;
+            padding: 0.6rem 0;
+            width: 100%;
+            text-align: center;
+            font-weight: 600;
+            transition: 0.2s;
+            color: #aaf0bb;
+            margin-top: auto;
+            cursor: pointer;
+        }
+
+        .fake-download:hover {
+            background: #2c8f4a;
+            color: #000f00;
+            border-color: #b3ffb3;
+        }
+
+        /* social — engineering style */
+        .social-tech {
+            display: flex;
+            gap: 2rem;
+            margin: 2.5rem 0 1rem;
+            padding: 1rem 0;
+            border-top: 2px solid #317a45;
+            flex-wrap: wrap;
+        }
+
+        .social-tech a {
+            color: #b6f0c0;
+            font-size: 2.2rem;
+            transition: 0.15s;
+        }
+
+        .social-tech a:hover {
+            color: #62fc96;
+            transform: translateY(-5px);
+        }
+
+        .footer-note {
+            font-size: 0.9rem;
+            color: #4a8755;
+            border-left: 4px solid #317a42;
+            padding-left: 1rem;
+        }
+
+        /* responsive */
+        @media (max-width: 850px) {
+            .tech-portfolio {
+                grid-template-columns: 1fr;
+            }
+            .left-panel {
+                border-right: none;
+                border-bottom: 2px solid #226633;
+            }
+        }
+
+        /* extra tech detail */
+        .hex {
+            color: #3fd46b;
+        }
+        .glitch {
+            background: #00000030;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tech-portfolio">
+
+    <!-- LEFT PANEL: mini identity + status (tech view) -->
+    <div class="left-panel">
+        <div class="profile-mini">
+            <div class="mama-badge">mama<span class="hex">_</span></div>
+            <div class="undergrad-tag">software engineer undergrad</div>
+        </div>
+
+        <div class="status-box">
+            <div class="status-item">
+                <i class="fas fa-terminal"></i> <span>/home/mama/dev</span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-code-branch"></i> <span>3rd year · 7th sem</span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-location-dot"></i> <span>colombo, lk</span>
+            </div>
+        </div>
+
+        <div style="margin: 1rem 0 2rem">
+            <div style="color:#6ba87b; font-size:0.9rem; margin-bottom:0.6rem;">// core stack</div>
+            <div class="tech-stack-mini">
+                <span class="stack-chip">C++</span>
+                <span class="stack-chip">Java</span>
+                <span class="stack-chip">Python</span>
+                <span class="stack-chip">React</span>
+                <span class="stack-chip">Node</span>
+                <span class="stack-chip">MongoDB</span>
+                <span class="stack-chip">Docker</span>
+                <span class="stack-chip">Git</span>
+            </div>
+        </div>
+
+        <!-- simple green decoration -->
+        <div style="margin-top: auto; border-left: 4px solid #278f44; padding-left: 1rem;">
+            <p style="color: #8ac08a;">“clean code, green deployments”</p>
+            <p style="color: #3b7546; font-size:0.9rem;">v1.0.2 · engineer</p>
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL: scrollable content (tech view) -->
+    <div class="right-panel">
+
+        <!-- ABOUT (terminal style) -->
+        <div class="tech-section-header">
+            <i class="fas fa-chevron-circle-right"></i> $ whoami
+        </div>
+        <div class="terminal-about">
+            <p><span style="color:#6de195;">mama@se:~$</span> cat about.txt</p>
+            <p style="margin-top: 10px;">{<br>
+            &nbsp;&nbsp;"role": "software engineering undergraduate",<br>
+            &nbsp;&nbsp;"passion": "full-stack, green tech, UI/UX",<br>
+            &nbsp;&nbsp;"current_focus": "distributed systems & cloud",<br>
+            &nbsp;&nbsp;"status": "building, learning, shipping"<br>
+            }<span class="cursor"></span></p>
+        </div>
+
+        <!-- PROJECTS : timeline view (tech) -->
+        <div class="tech-section-header">
+            <i class="fas fa-timeline"></i> $ projects — timeline
+        </div>
+        <div class="project-timeline">
+
+            <div class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-content">
+                    <h3>NeoBot <span style="font-size:1rem; color:#92dda5;">[discord infrastructure]</span></h3>
+                    <p>Modular bot with command framework, music cog, and green-theme logs. Deployed on a VPS.</p>
+                    <div class="tech-badge-group">
+                        <span class="tech-badge">discord.js</span>
+                        <span class="tech-badge">Node</span>
+                        <span class="tech-badge">Redis</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-content">
+                    <h3>EcoChain <span style="font-size:1rem; color:#92dda5;">[blockchain]</span></h3>
+                    <p>Carbon credit tracker using smart contracts. Users mint eco-tokens. Sepolia testnet.</p>
+                    <div class="tech-badge-group">
+                        <span class="tech-badge">Solidity</span>
+                        <span class="tech-badge">Hardhat</span>
+                        <span class="tech-badge">React</span>
+                        <span class="tech-badge">web3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                <div class="timeline-content">
+                    <h3>pixel·green <span style="font-size:1rem; color:#92dda5;">[computer vision]</span></h3>
+                    <p>OpenCV-based image filter that applies neon-green & glitch aesthetic. REST API with Flask.</p>
+                    <div class="tech-badge-group">
+                        <span class="tech-badge">Python</span>
+                        <span class="tech-badge">OpenCV</span>
+                        <span class="tech-badge">Flask</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SKILLS – matrix style (tech) -->
+        <div class="tech-section-header">
+            <i class="fas fa-microchip"></i> $ skillset
+        </div>
+        <div class="skills-matrix">
+            <div class="skill-cell"><i class="fas fa-code"></i> Java</div>
+            <div class="skill-cell"><i class="fas fa-code"></i> Python</div>
+            <div class="skill-cell"><i class="fab fa-react"></i> React</div>
+            <div class="skill-cell"><i class="fab fa-node"></i> Node.js</div>
+            <div class="skill-cell"><i class="fas fa-database"></i> MongoDB</div>
+            <div class="skill-cell"><i class="fas fa-cloud"></i> AWS</div>
+            <div class="skill-cell"><i class="fas fa-code-branch"></i> Git</div>
+            <div class="skill-cell"><i class="fas fa-terminal"></i> Bash</div>
+            <div class="skill-cell"><i class="fas fa-cubes"></i> Docker</div>
+            <div class="skill-cell"><i class="fas fa-paint-brush"></i> Figma</div>
+        </div>
+
+        <!-- CV + CERTIFICATES (dual tech cards) -->
+        <div class="tech-section-header">
+            <i class="fas fa-file-code"></i> $ credentials
+        </div>
+        <div class="cred-grid-tech">
+            <!-- CV card -->
+            <div class="tech-cred-item">
+                <i class="fas fa-file-lines"></i>
+                <span class="title">CV</span>
+                <span class="meta">software engineer undergrad</span>
+                <div class="fake-download" onclick="alert('CV download: mama_tech_2025.pdf')">
+                    <i class="fas fa-download"></i> cv.pdf
+                </div>
+            </div>
+            <!-- Certificate card -->
+            <div class="tech-cred-item">
+                <i class="fas fa-certificate"></i>
+                <span class="title">certs</span>
+                <span class="meta">5+ professional</span>
+                <ul style="color:#a0e2b0; list-style-type: '▹ '; margin:0.5rem 0 1.2rem 1.5rem;">
+                    <li>Meta Backend</li>
+                    <li>AWS Cloud Prac.</li>
+                    <li>Google UX</li>
+                </ul>
+                <div class="fake-download" onclick="alert('certificate bundle (simulated)')">
+                    <i class="fas fa-eye"></i> view all
+                </div>
+            </div>
+        </div>
+
+        <!-- SOCIAL & CONTACT (tech links) -->
+        <div class="tech-section-header">
+            <i class="fas fa-share-alt"></i> $ socials
+        </div>
+        <div class="social-tech">
+            <a href="#" title="github/mama"><i class="fab fa-github"></i></a>
+            <a href="#" title="linkedin/in/mama"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="x/mama"><i class="fab fa-twitter"></i></a>
+            <a href="#" title="dev.to/mama"><i class="fab fa-dev"></i></a>
+            <a href="#" title="medium"><i class="fab fa-medium"></i></a>
+            <a href="#" title="youtube"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <!-- tiny footer -->
+        <div class="footer-note">
+            <i class="fas fa-keyboard"></i> mama@undergrad.se  |  always building <span style="color: #58d17e;">⚡</span>
+        </div>
+        <div style="margin-top: 1rem; font-size:0.8rem; color: #3a6f45; text-align:right;">
+            [ system: dark_theme · green_matrix · tech_view ]
+        </div>
+
+    </div> <!-- right panel end -->
+</div> <!-- tech-portfolio end -->
+
+<!-- small script (no functionality needed, just visual) -->
+<script>
+    // just for fun – blink already in css
+</script>
+</body>
+</html>
